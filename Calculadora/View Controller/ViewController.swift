@@ -63,14 +63,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func eraseAll() {
-        labelValue = "0"
-        dotPressed = false
-    }
-    
-    @objc func showResult() {
-        secondNumber = Double("\(labelValue )") ?? 0
-        
+    func operations() {
         if operation == "+" {
             result = firstNumber + secondNumber
         }
@@ -86,6 +79,24 @@ class ViewController: UIViewController {
         else if operation == "/" {
             result = firstNumber / secondNumber
         }
+    }
+    
+    func setOperations(op: String) {
+        firstNumber = Double("\(labelValue )") ?? 0
+        labelValue = "0"
+        operation = op
+        dotPressed = false
+    }
+    
+    @objc func eraseAll() {
+        labelValue = "0"
+        dotPressed = false
+    }
+    
+    @objc func showResult() {
+        secondNumber = Double("\(labelValue )") ?? 0
+        
+        operations()
         
         labelValue = String(result)
     }
@@ -95,8 +106,6 @@ class ViewController: UIViewController {
     }
     
     @objc func dot() {
-        labelValue = labelValue + "."
-        
         if labelValue == String(result) {
             labelValue = "0"
             dotPressed = false
@@ -106,17 +115,15 @@ class ViewController: UIViewController {
             labelValue = "Error"
             dotPressed = false
         }
-        
+
         else {
+            labelValue = labelValue + "."
             dotPressed = true
         }
     }
     
     @objc func addition() {
-        firstNumber = Double("\(labelValue )") ?? 0
-        labelValue = "0"
-        operation = "+"
-        dotPressed = false
+        setOperations(op: "+")
     }
     
     @objc func showOne() {
@@ -132,10 +139,7 @@ class ViewController: UIViewController {
     }
     
     @objc func subtraction() {
-        firstNumber = Double("\(labelValue )") ?? 0
-        labelValue = "0"
-        operation = "-"
-        dotPressed = false
+        setOperations(op: "-")
     }
     
     @objc func showFour() {
@@ -151,10 +155,7 @@ class ViewController: UIViewController {
     }
     
     @objc func multiplication() {
-        firstNumber = Double("\(labelValue )") ?? 0
-        labelValue = "0"
-        operation = "x"
-        dotPressed = false
+        setOperations(op: "x")
     }
     
     @objc func showSeven() {
@@ -170,10 +171,7 @@ class ViewController: UIViewController {
     }
     
     @objc func division() {
-        firstNumber = Double("\(labelValue )") ?? 0
-        labelValue = "0"
-        operation = "/"
-        dotPressed = false
+        setOperations(op: "/")
     }
 }
 

@@ -8,26 +8,109 @@
 import XCTest
 @testable import Calculadora
 
-class CalculadoraTests: XCTestCase {
+class CalculadoraViewControllerTests: XCTestCase {
+    
+    var sut: ViewController!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() {
+        sut = ViewController()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
+        sut = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testShowNumberFirstMultipleTap() {
+        sut.showNumber(num: "2")
+        sut.showNumber(num: "3")
+        sut.showNumber(num: "4")
+        XCTAssertEqual(sut.labelValue, "234")
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testShowNumberAfterResult() {
+        sut.showNumber(num: "1")
+        sut.addition()
+        sut.showNumber(num: "2")
+        sut.showResult()
+        sut.showNumber(num: "4")
+        XCTAssertEqual(sut.labelValue, "4")
     }
-
+    
+    func testShowNumberFirstSingleTap() {
+        sut.showNumber(num: "5")
+        XCTAssertEqual(sut.labelValue, "5")
+    }
+    
+    func testAdditionOperation() {
+        sut.showNumber(num: "1")
+        sut.addition()
+        XCTAssertEqual(sut.operation, "+")
+        sut.showNumber(num: "2")
+        sut.showResult()
+        XCTAssertEqual(sut.result, 3.0)
+    }
+    
+    func testSubtractionOperation() {
+        sut.showNumber(num: "3")
+        sut.subtraction()
+        XCTAssertEqual(sut.operation, "-")
+        sut.showNumber(num: "4")
+        sut.showResult()
+        XCTAssertEqual(sut.result, -1.0)
+    }
+    
+    func testMultiplicationOperation() {
+        sut.showNumber(num: "5")
+        sut.multiplication()
+        XCTAssertEqual(sut.operation, "x")
+        sut.showNumber(num: "6")
+        sut.showResult()
+        XCTAssertEqual(sut.result, 30.0)
+    }
+    
+    func testDivisionOperation() {
+        sut.showNumber(num: "7")
+        sut.division()
+        XCTAssertEqual(sut.operation, "/")
+        sut.showNumber(num: "8")
+        sut.showResult()
+        XCTAssertEqual(sut.result, 0.875)
+    }
+    
+    func testSetOperations() {
+        sut.showNumber(num: "9")
+        sut.addition()
+        XCTAssertEqual(sut.firstNumber, 9.0)
+        XCTAssertEqual(sut.labelValue, "0")
+        XCTAssertEqual(sut.operation, "+")
+        XCTAssertFalse(sut.dotPressed)
+        sut.showNumber(num: "10")
+        sut.showResult()
+    }
+    
+    func testDotAfterResult() {
+        sut.showNumber(num: "11")
+        sut.addition()
+        sut.showNumber(num: "12")
+        sut.showResult()
+        sut.dot()
+        XCTAssertEqual(sut.labelValue, "0")
+        XCTAssertTrue(sut.dotPressed)
+    }
+    
+    func testDotError() {
+        sut.dot()
+        sut.showNumber(num: "13")
+        sut.addition()
+        sut.dot()
+        sut.dot()
+        XCTAssertEqual(sut.labelValue, "Error")
+        XCTAssertFalse(sut.dotPressed)
+    }
+    
+    func testDotFirstExpression() {
+        sut.dot()
+        sut.showNumber(num: "14")
+        XCTAssertTrue(sut.dotPressed)
+    }
 }
